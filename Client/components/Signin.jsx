@@ -44,11 +44,11 @@ const Signin = () => {
       });
 
       if (response.status == 200) {
-        Cookies.set("jwtToken", response.data.signinToken, { expires: 7, path: '/', secure: false, sameSite: 'None' });
-
+        navigate('/user');
+        Cookies.set("jwtToken", response.data.signinToken, { expires: 7, path: '/', secure: false, sameSite: 'None' });    
         setIsLoggedIn(true);
         toast.success("Sign-in successful");
-        navigate('/user');
+        
       } else {
 
         setIsLoggedIn(false);

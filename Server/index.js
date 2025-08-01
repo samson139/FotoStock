@@ -74,7 +74,7 @@ server.post('/logout', logout)
 server.post("/api/chat", AIcall);
 
 server.get("/test", (req, res) => {
-  console.log("hi");
+  res.send("Hello from the server");
 })
 
 server.listen(5025, () => {

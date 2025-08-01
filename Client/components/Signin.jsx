@@ -45,10 +45,10 @@ const Signin = () => {
 
       if (response.status == 200) {
         Cookies.set("jwtToken", response.data.signinToken, { expires: 7, path: '/', secure: false, sameSite: 'None' });
-
+        navigate('/user', { replace: true });
         setIsLoggedIn(true);
         toast.success("Sign-in successful");
-        navigate('/user');
+
       } else {
 
         setIsLoggedIn(false);

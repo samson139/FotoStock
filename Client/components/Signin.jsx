@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 
 const Signin = () => {
   const { setIsLoggedIn, isLoggedIn } = useAuthContext();
+  const [loading, setLoading] = useState(true);
   const userRef = useRef();
   const navigate = useNavigate();
 
@@ -20,10 +21,18 @@ const Signin = () => {
 
 
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/user", { replace: true });
+    const isValid = checkToken();
+    setIsLoggedIn(isValid);
+    setLoading(false);
     }
-  }, [isLoggedIn, navigate]);
+  }, []);
+
+  useEffect(() => {
+  if (isLoggedIn) {
+    navigate("/user", { replace: true });
+  }
+}, [isLoggedIn, navigate]);
+
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -69,6 +78,7 @@ const Signin = () => {
       }
     }
   };
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center bg-gray-100 dark:bg-slate-900">

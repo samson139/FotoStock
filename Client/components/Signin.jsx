@@ -23,13 +23,13 @@ const Signin = () => {
     if (checkToken()) {
       navigate("/user", { replace: true });
     }
-  }, []);
+  }, [checkToken, navigate]);
 
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/user", { replace: true });
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;

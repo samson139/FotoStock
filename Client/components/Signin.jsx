@@ -7,7 +7,7 @@ import { useAuthContext } from "./Authentication";
 import Cookies from 'js-cookie';
 
 const Signin = () => {
-  const { setIsLoggedIn, isLoggedIn } = useAuthContext();
+  const { setIsLoggedIn, isLoggedIn, checkToken } = useAuthContext();
   const [loading, setLoading] = useState(true);
   const userRef = useRef();
   const navigate = useNavigate();

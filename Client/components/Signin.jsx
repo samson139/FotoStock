@@ -7,7 +7,7 @@ import { useAuthContext } from "./Authentication";
 import Cookies from 'js-cookie';
 
 const Signin = () => {
-  const { setIsLoggedIn, checkToken, isLoggedIn } = useAuthContext();
+  const { setIsLoggedIn, isLoggedIn } = useAuthContext();
   const userRef = useRef();
   const navigate = useNavigate();
 
@@ -18,12 +18,6 @@ const Signin = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
 
-
-  useEffect(() => {
-    if (checkToken()) {
-      navigate("/user", { replace: true });
-    }
-  }, [checkToken, navigate]);
 
   useEffect(() => {
     if (isLoggedIn) {

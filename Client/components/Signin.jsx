@@ -18,14 +18,13 @@ const Signin = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ Redirect if already logged in
+
   useEffect(() => {
     if (checkToken()) {
       navigate("/user", { replace: true });
     }
   }, []);
 
-  // ✅ Watch login status to navigate
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/user", { replace: true });
@@ -52,10 +51,9 @@ const Signin = () => {
 
       if (response.status == 200) {
         Cookies.set("jwtToken", response.data.signinToken, { expires: 7, path: '/', secure: false, sameSite: 'None' });
-
         setIsLoggedIn(true);
         toast.success("Sign-in successful");
-        navigate('/user');
+        navigate('/user',);
       } else {
         setIsLoggedIn(false);
         setErrorMsg(response.message || "Unknown error during sign-in");

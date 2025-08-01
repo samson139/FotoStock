@@ -17,7 +17,7 @@ server.use(express.json());
 
 server.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://samsfotostock.netlify.app",
     credentials: true,
   })
 

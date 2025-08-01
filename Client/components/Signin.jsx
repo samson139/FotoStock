@@ -19,19 +19,18 @@ const Signin = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
 
-
   useEffect(() => {
     const isValid = checkToken();
     setIsLoggedIn(isValid);
     setLoading(false);
-    }
   }, []);
 
+
   useEffect(() => {
-  if (isLoggedIn) {
-    navigate("/user", { replace: true });
-  }
-}, [isLoggedIn, navigate]);
+    if (isLoggedIn) {
+      navigate("/user", { replace: true });
+    }
+  }, [isLoggedIn, navigate]);
 
 
   const inputHandler = (e) => {

@@ -2,7 +2,6 @@
 
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
@@ -11,7 +10,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: '_redirects',
+          src: 'public/_redirects',
           dest: '.' // puts it into dist/
         }
       ]

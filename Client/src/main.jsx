@@ -1,10 +1,8 @@
-import { createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
-import App from './App.jsx';
-import {
-  Signin, User, UserLayout, Contact, CartItems, Search,
-  Checkout, Payment, Success, Imagedetail
-} from "../components";
+import App from './App.jsx'
+import { Signin, User, UserLayout, Contact, CartItems, Search, Checkout, Payment, Success, Imagedetail } from "../components";
 import Upload from '../components/Upload.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,37 +12,77 @@ import ThemeContext from '../components/ThemeContext.jsx';
 import store from '../Redux/Store/Store.js';
 import { Provider } from "react-redux";
 import MainLayout from '../components/MainLayout.jsx';
-
-import { HashRouter, Routes, Route } from 'react-router-dom';
-
 const queryClient = new QueryClient();
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <App />
+      },
+      {
+        path: "signin",
+        element: <Signin />
+      }
+    ]
+  },
+  {
+    path: "/user",
+    element: <UserLayout />,
+    children: [
+      {
+        index: true,
+        element: <User />
+      },
+      {
+        path: 'upload',
+        element: <Upload />
+      },
+      {
+        path: 'contact',
+        element: <Contact />
+      },
+      {
+        path: 'image/:id',
+        element: <Imagedetail />
+      },
+
+      {
+        path: 'cartitems',
+        element: <CartItems />,
+      },
+      {
+        path: 'checkout',
+        element: <Checkout />
+      },
+      {
+        path: 'payment',
+        element: <Payment />
+      },
+      {
+        path: 'success',
+        element: <Success />
+      },
+      {
+        path: 'search',
+        element: <Search />
+      },
+      {
+        path: 'search/image/:id',
+        element: <Imagedetail />
+      },
+    ]
+  },
+]);
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <Authentication>
         <ThemeContext>
-          <HashRouter>
-            <Routes>
-              <Route path="/" element={<MainLayout />}>
-                <Route index element={<App />} />
-                <Route path="signin" element={<Signin />} />
-              </Route>
-
-              <Route path="/user" element={<UserLayout />}>
-                <Route index element={<User />} />
-                <Route path="upload" element={<Upload />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="image/:id" element={<Imagedetail />} />
-                <Route path="cartitems" element={<CartItems />} />
-                <Route path="checkout" element={<Checkout />} />
-                <Route path="payment" element={<Payment />} />
-                <Route path="success" element={<Success />} />
-                <Route path="search" element={<Search />} />
-                <Route path="search/image/:id" element={<Imagedetail />} />
-              </Route>
-            </Routes>
-          </HashRouter>
+          <RouterProvider router={router} />
           <ToastContainer position="top-center" autoClose={5000} />
         </ThemeContext>
       </Authentication>

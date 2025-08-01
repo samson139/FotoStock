@@ -21,9 +21,9 @@ const Signin = () => {
 
   useEffect(() => {
     if (checkToken()) {
-      navigate("/user", { replace: true });
+      navigate("/user");
     }
-  }, [navigate]);
+  }, []);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -48,7 +48,7 @@ const Signin = () => {
 
         setIsLoggedIn(true);
         toast.success("Sign-in successful");
-        navigate('/user', { replace: true });
+        navigate('/user');
       } else {
 
         setIsLoggedIn(false);

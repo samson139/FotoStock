@@ -1,8 +1,8 @@
 
 import { GiPlayButton } from "react-icons/gi";
 import PropTypes from 'prop-types';
-import axios from "axios";
 import { useState, useRef, useEffect } from 'react';
+import customFetch from "../src/utils/utils";
 
 
 const ChatBox = ({ setOpen }) => {
@@ -31,7 +31,7 @@ const ChatBox = ({ setOpen }) => {
     setMessage(""); // clear input immediately
 
     try {
-      const response = await axios.post("https://fotostock.onrender.com/api/chat", { message: currentMessage });
+      const response = await customFetch.post("/api/chat", { message: currentMessage });
       setMessages((prev) => [...prev, { sender: 'ai', text: response.data.data }]);
     } catch (error) {
       console.error("Error sending message:", error);

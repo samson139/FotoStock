@@ -38,7 +38,7 @@ function Navbar() {
 
         {/* Full Nav (visible on lg+) */}
         <div className="hidden lg:flex items-center space-x-6">
-          <NavLink to="/signin" className="text-white text-xl hover:text-yellow-200">Home</NavLink>
+          <NavLink to="/" className="text-white text-xl hover:text-yellow-200">Home</NavLink>
           <NavLink to="upload" className="text-white text-xl hover:text-yellow-200">Upload</NavLink>
           <NavLink to="search" className="text-white text-xl hover:text-yellow-200">Search</NavLink>
           <NavLink to="contact" className="text-white text-xl hover:text-yellow-200">Contact me</NavLink>

@@ -44,13 +44,14 @@ const Signin = () => {
     setErrorMsg("");
 
     try {
-      const { data, status } = await customFetch.post("/signin", formData, {
+      const response = await customFetch.post("/signin", formData, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });
 
-      if (status === 200) {
-        Cookies.set("jwtToken", data.signinToken, {
+      if (response.status === 200) {
+        console.log("Signin successful:", response);
+        Cookies.set("jwtToken", response.signinToken, {
           expires: 7,
           path: '/',
           secure: true,

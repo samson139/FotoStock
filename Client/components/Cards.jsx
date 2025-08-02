@@ -34,9 +34,8 @@ const Cards = () => {
   return (
     <>
       <div className="mt-2 w-full h-full flex flex-row justify-around flex-wrap">
-        {currentPosts.map((img) => {
-          const { _id, imagename, price, description, url, firstname } = img
-
+        {currentPosts > 0 && currentPosts.map((img) => {
+          const { _id, imagename, price, description, url, firstname } = img;
           return (
             <div key={_id} className="w-full h-full rounded-md sm:w-[45%] md:w-[40%] lg:w-[26%] xl:w-[24%] hover:scale-105 transition duration-300">
               <Card

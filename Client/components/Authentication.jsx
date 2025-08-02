@@ -2,6 +2,7 @@ import { useEffect, useContext, createContext, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
+import customFetch from "../src/utils/utils";
 
 export const AuthenticationContext = createContext();
 export const useAuthContext = () => useContext(AuthenticationContext);

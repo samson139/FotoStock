@@ -7,7 +7,7 @@ import { useAuthContext } from "./Authentication";
 import Cookies from 'js-cookie';
 
 const Signin = () => {
-  const { setIsLoggedIn, isLoggedIn, checkToken } = useAuthContext();
+  const { setIsLoggedIn, checkToken } = useAuthContext();
   const [loading, setLoading] = useState(true);
   const userRef = useRef();
   const navigate = useNavigate();
@@ -20,17 +20,14 @@ const Signin = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const isValid = checkToken();
-    setIsLoggedIn(isValid);
+    const token = checkToken();
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
     setLoading(false);
   }, []);
-
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/user", { replace: true });
-    }
-  }, [isLoggedIn, navigate]);
 
 
   const inputHandler = (e) => {
@@ -43,40 +40,43 @@ const Signin = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
+
     try {
-      const response = await customFetch.post("/signin", formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const { data, status } = await customFetch.post("/signin", formData, {
+        headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });
 
-      if (response.status == 200) {
-        Cookies.set("jwtToken", response.data.signinToken, { expires: 7, path: '/', secure: false, sameSite: 'None' });
+      if (status === 200) {
+        Cookies.set("jwtToken", data.signinToken, {
+          expires: 7,
+          path: '/',
+          secure: true,
+          sameSite: 'None'
+        });
+
         setIsLoggedIn(true);
         toast.success("Sign-in successful");
-        navigate('/user',);
-      } else {
-        setIsLoggedIn(false);
-        setErrorMsg(response.message || "Unknown error during sign-in");
-        toast.error(response.message || "Error during sign-in");
+        navigate("/user");
       }
     } catch (error) {
       console.error("Signin error:", error);
       setIsLoggedIn(false);
 
-      if (error.response?.status === 401) {
-        setErrorMsg("Invalid credentials");
-        toast.error("Invalid credentials");
-      } else if (error.response?.status === 400) {
-        setErrorMsg("Bad request. Check input.");
-        toast.error("Bad request");
-      } else {
-        setErrorMsg("An error occurred. Try again later.");
-        toast.error("An error occurred. Try again.");
-      }
+      const status = error.response?.status;
+      const message =
+        status === 401
+          ? "Invalid credentials"
+          : status === 400
+            ? "Bad request. Check input."
+            : "An error occurred. Try again.";
+
+      setErrorMsg(message);
+      toast.error(errorMsg || message);
     }
   };
+
   if (loading) return <p>Loading...</p>;
 
   return (

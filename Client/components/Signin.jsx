@@ -50,8 +50,8 @@ const Signin = () => {
       });
 
       if (response.status === 200) {
-        console.log("Signin successful:", response);
-        Cookies.set("jwtToken", response.signinToken, {
+        console.log("Signin successful:", response.data.signinToken);
+        Cookies.set("jwtToken", response.data.signinToken, {
           expires: 7,
           path: '/',
           secure: true,

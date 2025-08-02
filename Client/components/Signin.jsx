@@ -50,13 +50,13 @@ const Signin = () => {
       });
 
       if (response.status === 200) {
-        console.log("Signin successful:", response);
-        // Cookies.set("jwtToken", response.signinToken, {
-        //   expires: 7,
-        //   path: '/',
-        //   secure: true,
-        //   sameSite: 'None'
-        // });
+        console.log("Signin successful:", response.data.signinToken);
+        Cookies.set("jwtToken", response.data.signinToken, {
+          expires: 7,
+          path: '/',
+          secure: true,
+          sameSite: 'None'
+        });
 
         setIsLoggedIn(true);
         toast.success("Sign-in successful");

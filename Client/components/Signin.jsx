@@ -23,6 +23,7 @@ const Signin = () => {
     const token = checkToken();
     if (token) {
       setIsLoggedIn(true);
+      navigate("/user", { replace: true });
     } else {
       setIsLoggedIn(false);
     }

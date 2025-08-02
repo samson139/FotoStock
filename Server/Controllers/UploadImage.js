@@ -2,7 +2,6 @@
 const UserModel = require("../models/usermodel")
 const path = require("path");
 const PhotoModel = require("../models/products")
-// const cloudinary = require("../Utils/cloudinary");
 const fs = require("fs");
 const aws = require("aws-sdk");
 

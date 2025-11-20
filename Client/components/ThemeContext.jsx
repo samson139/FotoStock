@@ -1,36 +1,35 @@
+import { createContext, useContext, useState, useEffect } from "react";
 
-/* eslint-disable react/prop-types */
-import { useState, useEffect, createContext, useContext } from "react";
+const ThemeContext = createContext();
 
-export const ContextOfTheme = createContext();
-export const useThemeContext = () => useContext(ContextOfTheme);
+export const useThemeContext = () => useContext(ThemeContext);
 
-const ThemeContext = ({ children }) => {
-  const [isDarkMode, setDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark' ? true : false
-  );
+export const ThemeProvider = ({ children }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check the initial theme preference from localStorage or system preference
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === "dark");
+    } else {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setIsDarkMode(prefersDark);
+    }
+  }, []);
+
   const toggleTheme = () => {
-    setDarkMode((prevTheme) => {
-      const newTheme = !prevTheme
-      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-      return newTheme;
+    setIsDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem("theme", newMode ? "dark" : "light");
+      return newMode;
     });
   };
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
-
   return (
-    <ContextOfTheme.Provider value={{ isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       {children}
-    </ContextOfTheme.Provider>
-  )
-}
+    </ThemeContext.Provider>
+  );
+};
 
-export default ThemeContext;

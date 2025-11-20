@@ -1,29 +1,100 @@
 /* eslint-disable react/prop-types */
-import { useLocation, useNavigate } from "react-router-dom"
+/* eslint-disable react/prop-types */
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Card = ({ id, imagename, price, description, url, firstname, children }) => {
+const Card = ({
+  id,
+  imagename,
+  price,
+  description,
+  url,
+  firstname,
+  uploadedAt,
+  children
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleClick = () => {
-    navigate(`image/${id}`, { state: { from: location } })
-  }
+    navigate(`image/${id}`, { state: { from: location } });
+  };
+
   return (
-    <div className="w-[70%] h-full md:w-[90%] lg:w-[72%] mx-auto p-1 mt-1 mb-1" onClick={handleClick}>
-      <img className="w-full h-[250px] lg:h-[200px] rounded-lg hover:opacity-70" src={url} alt={imagename} />
-      <div className="flex justify-between px-2">
-        <p className="dark:text-amber-100 font-bold font-mono tracking-widest text-gray-700 text-l pt-2">
-          {imagename}</p>
-        <span className="dark:text-amber-100 w-15 text-sm my-auto tracking-widest font-bold text-gray-800">{price}$</span>
+    <div
+      onClick={handleClick}
+      className="
+      group relative backdrop-blur-xl bg-white/40 dark:bg-gray-800/40 
+      border border-white/30 dark:border-gray-600/30 rounded-3xl
+      shadow-xl overflow-hidden mx-auto cursor-pointer
+      w-full max-w-sm transition-all duration-500 ease-out
+      hover:scale-[1.04] hover:shadow-2xl hover:border-white/60
+      hover:dark:border-gray-400
+    "
+    >
+
+      {/* SHIMMER HOVER EFFECT */}
+      <div className="
+        absolute inset-0 opacity-0 group-hover:opacity-20 
+        bg-gradient-to-r from-transparent via-white to-transparent 
+        dark:via-gray-300
+        transition-opacity duration-500 pointer-events-none
+        animate-shimmer
+      "></div>
+
+      {/* IMAGE */}
+      <div className="relative">
+        <img
+          src={url}
+          alt={imagename}
+          className="w-full h-60 object-cover rounded-t-3xl 
+                     transition-all duration-400 group-hover:opacity-80"
+        />
       </div>
-      <p className="dark:text-amber-50 text-gray-700 tracking-widest text-sm px-2 overflow-scroll mb-1">{description} </p>
-      <div className='dark:bg-slate-600 flex justify-between items-center bg-slate-200 rounded-2xl mt-auto'>
-        <div className='dark:text-amber-100 text-gray-600 font-semibold tracking-wider px-2'>By {firstname ? (firstname[0] + firstname.slice(1).toLowerCase()) : "anonymous"}</div>
-        {children}
+
+      {/* TITLE + DESCRIPTION */}
+      <div className="px-5 py-4">
+        <h3 className="text-xl font-extrabold bg-gradient-to-r 
+                       from-blue-700 to-purple-600 dark:from-amber-300 dark:to-pink-300
+                       bg-clip-text text-transparent tracking-wide mb-1">
+          {imagename}
+        </h3>
+
+        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed line-clamp-2">
+          {description}
+        </p>
+      </div>
+
+      {/* UPLOAD INFO */}
+      <div className="px-5 py-2 flex justify-between text-xs font-medium 
+                      text-gray-600 dark:text-gray-400 border-t 
+                      border-gray-300/40 dark:border-gray-600/40">
+        <span>
+          {uploadedAt
+            ? new Date(uploadedAt).toLocaleDateString()
+            : "Unknown date"}
+        </span>
+
+        <span>
+          By{" "}
+          {firstname
+            ? firstname[0].toUpperCase() + firstname.slice(1).toLowerCase()
+            : "Anonymous"}
+        </span>
+      </div>
+
+      {/* PRICE + CHILDREN */}
+      <div className="flex justify-between items-center px-5 py-3
+                      bg-white/50 dark:bg-gray-700/50 
+                      rounded-b-3xl backdrop-blur-md">
+        <div>{children}</div>
+
+        <span className="text-lg font-extrabold 
+                         text-blue-700 dark:text-blue-400">
+          ${price}
+        </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-
-export default Card
+export default Card;

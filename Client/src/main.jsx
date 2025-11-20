@@ -1,3 +1,4 @@
+
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
@@ -8,7 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import Authentication from '../components/Authentication.jsx';
-import ThemeContext from '../components/ThemeContext.jsx';
+import { ThemeProvider } from '../components/ThemeContext.jsx';
 import store from '../Redux/Store/Store.js';
 import { Provider } from "react-redux";
 import MainLayout from '../components/MainLayout.jsx';
@@ -23,10 +24,14 @@ const router = createBrowserRouter([
         element: <App />
       },
       {
-        path: "signin",
+        path: "/signin",
         element: <Signin />
       }
     ]
+  },
+  {
+    path: "/signin",
+    element: <Signin />,
   },
   {
     path: "/user",
@@ -81,10 +86,10 @@ createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <Authentication>
-        <ThemeContext>
+        <ThemeProvider>
           <RouterProvider router={router} />
           <ToastContainer position="top-center" autoClose={5000} />
-        </ThemeContext>
+        </ThemeProvider>
       </Authentication>
     </QueryClientProvider>
   </Provider>

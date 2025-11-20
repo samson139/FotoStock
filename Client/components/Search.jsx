@@ -102,7 +102,7 @@ const Search = () => {
                     firstname={firstname}
                   >
                     <button
-                      className="w-[50%] text-sm btn btn-primary bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
+                      className="w-[100%] text-sm btn btn-primary bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
                       onClick={() => handleAddToCart(img)}
                     >
                       Add

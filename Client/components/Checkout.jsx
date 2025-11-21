@@ -1,79 +1,41 @@
 import { NavLink } from "react-router-dom";
-
 import { Form } from "react-router-dom";
+import FormInput from "./FormInput";
+
 const Checkout = () => {
   return (
-    <>
-      <div className="dark:bg-slate-700 w-full min-w-[200px] max-w-[750px] p-5 rounded-md bg-gray-100 shadow-lg shadow-zinc-600 mx-auto  mt-14">
-        <div className="w-full m-4 mx-auto">
-          <h1 className="dark:text-gray-300 w-full text-center font-serif text-black text-xl tracking-widest sm:text-2xl md:text-3xl md:mb-4">Shipping address</h1>
-          <Form className="flex flex-col justify-center max-w-[700px] mx-auto py-2">
-            <label htmlFor="exampleInputFirstName" className="dark:text-white dark:bg-slate-600 dark:border-slate-400 bg-gray-100 border-2 border-gray-800 text-black input input-bordered flex items-center gap-2 mb-3">
-              First name
-              <input
-                type="text"
-                name="firstname"
-                id="exampleInputFirstName"
-                required />
-            </label>
-            <label htmlFor="exampleInputLastName" className="dark:text-white dark:bg-slate-600 dark:border-slate-400 bg-gray-100 border-2 border-gray-800 text-black input input-bordered flex items-center gap-2 mb-3">Last name
-              <input
-                type="text"
-                name="lastname"
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="w-full max-w-lg p-8 md:p-10 rounded-3xl shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <h1 className="text-center text-3xl font-bold text-gray-900 dark:text-white mb-6 tracking-wider">
+          Shipping Address
+        </h1>
 
-                id="exampleInputLastName"
-                required />
-            </label>
-            <label htmlFor="exampleInputEmail1" className="dark:text-white dark:bg-slate-600 dark:border-slate-400 bg-gray-100 border-2 border-gray-800 text-black input input-bordered flex items-center gap-2 mb-3">Email address
-              <input
-                type="email"
-                name="email"
+        <Form className="flex flex-col gap-4">
+          <FormInput label="First Name" name="firstname" type="text" placeholder="John" />
+          <FormInput label="Last Name" name="lastname" type="text" placeholder="Doe" />
+          <FormInput label="Email Address" name="email" type="email" placeholder="example@mail.com" />
+          <FormInput label="Address" name="address" type="text" placeholder="123 Main St" />
+          <FormInput label="City" name="city" type="text" placeholder="New York" />
+          <FormInput label="Mobile Number" name="mobile" type="number" placeholder="1234567890" />
+        </Form>
 
-                id="exampleInputEmail1"
-                required
-              />
-            </label>
+        <div className="flex justify-between gap-4 mt-6">
+          <NavLink to="/user/cartitems" className="flex-1">
+            <button className="w-full py-2 rounded-xl bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold transition shadow-md">
+              Back
+            </button>
+          </NavLink>
 
-            <label htmlFor="address" className="dark:text-white dark:bg-slate-600 dark:border-slate-400 bg-gray-100 border-2 border-gray-800 text-black  input input-bordered flex items-center gap-2 mb-3"> Address
-              <input
-                type="text"
-                name="address"
-
-                id="address"
-                required
-              />
-            </label>
-
-            <label htmlFor="city" className="dark:text-white dark:bg-slate-600 dark:border-slate-400 bg-gray-100 border-2 border-gray-800 text-black  input input-bordered flex items-center gap-2 mb-3">City
-              <input
-                type="text"
-                name="city"
-
-                id="city"
-                required
-              />
-            </label>
-            <label htmlFor="mobile" className="dark:text-white dark:bg-slate-600 dark:border-slate-400 bg-gray-100 border-2 border-gray-800 text-black  input input-bordered flex items-center gap-2 mb-3">Mobile number
-              <input
-                type="number"
-                name="mobile"
-
-                id="mobile"
-                required
-              />
-            </label>
-          </Form>
-          <div className="flex justify-around py-5">
-            <NavLink to="/user/cartitems">
-              <button className="btn btn-primary">Back</button>
-            </NavLink>
-            <NavLink to="/user/payment">
-              <button className="btn btn-primary">Click to pay</button>
-            </NavLink>
-          </div>
+          <NavLink to="/user/payment" className="flex-1">
+            <button className="w-full py-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold transition shadow-md">
+              Click to Pay
+            </button>
+          </NavLink>
         </div>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
+
 export default Checkout;
+

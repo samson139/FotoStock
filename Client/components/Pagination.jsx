@@ -15,7 +15,7 @@ const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) =
   const visiblePages = pages.slice(start - 1, end);
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-50">
+    <div className="flex gap-3 justify-center mt-10 px-4 py-2">
       {/* Prev Button */}
       <button
         onClick={() => setCurrentPage(prev => prev - 1)}

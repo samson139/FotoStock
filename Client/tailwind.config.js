@@ -10,6 +10,9 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        manrope: ["Manrope", "sans-serif"],
+      },
       backgroundImage: {
         'main': "url('/assets/splash.jpg')",
       },

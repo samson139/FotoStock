@@ -54,10 +54,16 @@ const Upload = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white-100 via-gray-100 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 p-6">
+
+
+      {/* Right Side — Form */}
       <form
-        className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 flex flex-col gap-6
-                   border border-gray-200 dark:border-gray-700 transition-all duration-500
-                   hover:shadow-3xl hover:scale-[1.01]"
+        className="
+      w-full md:w-1/2 lg:w-1/3 
+      bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 flex flex-col gap-6
+      border border-gray-200 dark:border-gray-700 transition-all duration-500
+      hover:shadow-3xl hover:scale-[1.01]
+    "
         onSubmit={handleSubmit}
       >
         <h2 className="text-3xl font-extrabold text-gray-900 dark:text-amber-200 text-center mb-6 tracking-tight">
@@ -136,7 +142,9 @@ const Upload = () => {
           {isLoading ? "Uploading..." : "Upload Image"}
         </button>
       </form>
+
     </div>
+
   )
 }
 

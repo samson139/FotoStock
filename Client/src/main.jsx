@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import App from './App.jsx'
-import { Signin, User, UserLayout, Contact, CartItems, Search, Checkout, Payment, Success, Imagedetail } from "../components";
+import { Signin, User, UserLayout, Contact, CartItems, Search, Checkout, Payment, Success, Imagedetail, Signup } from "../components";
 import Upload from '../components/Upload.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
         element: <App />
       },
       {
-        path: "/signin",
-        element: <Signin />
+        path: "/signup",
+        element: <Signup />
       }
     ]
   },

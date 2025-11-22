@@ -11,6 +11,7 @@ const UserLayout = () => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useThemeContext();
+
   useEffect(() => {
     const checkAuth = () => {
       const token = Cookies.get("jwtToken");
@@ -31,29 +32,39 @@ const UserLayout = () => {
   }
 
   return (
-    <div className='relative w-full min-h-screen overflow-hidden'>
-      <Navbar />
-      <div className="w-full h-full mx-auto scroll-smooth">
-        <label className="dark:text-amber-100 py-2 absolute top-0 right-10 inline-flex items-center cursor-pointer">
-          <input type="checkbox" value="" checked={isDarkMode} className="sr-only peer" onChange={toggleTheme} />
-          <div
-            className={`fixed top-20 right-5 z-10 md:top-22 lg:top-24 md:right-10 w-14 h-7 bg-gray-200
-      peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
-      dark:peer-focus:bg-gray-800 rounded-full peer
-      peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-      peer-checked:after:border-white after:content-['']
-      after:absolute  after:start-[0px] after:bg-white after:border-2 after:border-gray-500 
-      after:rounded-full after:h-6 after:w-6 after:transition-all 
-      dark:border-blue-500 border-2 border-black dark:peer-checked:bg-blue-600
-      peer-checked:bg-gray-600`}
-          ></div>
-        </label>
+    <div className={isDarkMode ? "dark" : ""}>
+      {/* 🌙 DARK MODE TOGGLE — always visible */}
+      <label className="fixed top-24 right-10 z-50 inline-flex items-center cursor-pointer dark:text-amber-100">
+        <input
+          type="checkbox"
+          checked={isDarkMode}
+          className="sr-only peer"
+          onChange={toggleTheme}
+        />
+        <div
+          className="
+            relative w-14 h-7 bg-gray-200 rounded-full peer
+            peer-checked:after:translate-x-full
+            after:content-[''] after:absolute after:top-[1px] after:left-[1px]
+            after:bg-gray-800 after:border after:border-gray-500
+            after:rounded-full after:h-6 after:w-6 after:transition-all
+            border border-black dark:border-blue-500
+            peer-checked:bg-gray-600 dark:peer-checked:bg-blue-600
+          "
+        ></div>
+      </label>
 
+      {/* MAIN LAYOUT */}
+      <div className="w-full min-h-screen overflow-hidden">
+        <Navbar />
 
-        <div className='dark:bg-slate-900 h-[100%] min-h-screen pt-20 bg-gray-100 transition-all duration-300 ease-in-out'>
+        {/* Page Content */}
+        <div className="z-20 min-h-screen pt-20 md:pt-24 bg-gray-100 dark:bg-slate-900 transition-all duration-300">
           <Outlet context={userData} />
         </div>
-        <div className='fixed bottom-0 z-50 border'>
+
+        {/* Chat Support */}
+        <div className="fixed bottom-0 z-40">
           <ChatSupport />
         </div>
       </div>
@@ -62,3 +73,4 @@ const UserLayout = () => {
 };
 
 export default UserLayout;
+

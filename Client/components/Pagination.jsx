@@ -1,15 +1,12 @@
-
 // eslint-disable-next-line react/prop-types
 const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) => {
   const totalPages = Math.ceil(totalPosts / postsPerPage);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  // Logic to show only 10 pages at a time
   const maxButtons = 10;
   const half = Math.floor(maxButtons / 2);
   let start = Math.max(currentPage - half, 1);
   let end = start + maxButtons - 1;
-
   if (end > totalPages) {
     end = totalPages;
     start = Math.max(end - maxButtons + 1, 1);
@@ -18,30 +15,47 @@ const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) =
   const visiblePages = pages.slice(start - 1, end);
 
   return (
-    <div className="fixed bottom-4 mx-auto">
+    <div className="flex gap-3 justify-center mt-10 px-4 py-2">
+      {/* Prev Button */}
       <button
-        className="dark:bg-slate-100 join-item btn ml-1 font-semibold dark:text-black text-white"
-        onClick={() => setCurrentPage((prev) => prev - 1)}
+        onClick={() => setCurrentPage(prev => prev - 1)}
         disabled={currentPage === 1}
+        className={`
+          px-4 py-2 rounded-lg font-semibold transition-all duration-300
+          ${currentPage === 1
+            ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600 hover:scale-105 shadow-lg dark:hover:bg-blue-700"}
+        `}
       >
         Prev
       </button>
 
+      {/* Page Buttons */}
       {visiblePages.map((page) => (
         <button
           key={page}
-          className={`dark:bg-slate-100 join-item btn mx-1 ${page === currentPage ? 'dark:bg-blue-400 bg-blue-400 text-black' : ''}`}
-
           onClick={() => setCurrentPage(page)}
+          className={`
+            px-4 py-2 rounded-lg font-bold transition-all duration-300
+            ${page === currentPage
+              ? "bg-blue-600 text-white shadow-xl scale-105"
+              : "bg-gray-200 dark:bg-gray-800 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 hover:scale-105"}
+          `}
         >
-          <span className="font-bold text-white dark:text-black">{page}</span>
+          {page}
         </button>
       ))}
 
+      {/* Next Button */}
       <button
-        className="dark:bg-slate-100 join-item btn ml-1 font-semibold dark:text-black text-white"
-        onClick={() => setCurrentPage((prev) => prev + 1)}
+        onClick={() => setCurrentPage(prev => prev + 1)}
         disabled={currentPage === totalPages}
+        className={`
+          px-4 py-2 rounded-lg font-semibold transition-all duration-300
+          ${currentPage === totalPages
+            ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600 hover:scale-105 shadow-lg dark:hover:bg-blue-700"}
+        `}
       >
         Next
       </button>
@@ -49,5 +63,4 @@ const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) =
   );
 };
 
-
-export default Pagination
+export default Pagination;

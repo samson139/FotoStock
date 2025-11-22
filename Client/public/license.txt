@@ -1,0 +1,8 @@
+Model Information:
+* title:	Vintage Camera
+* source:	https://sketchfab.com/3d-models/vintage-camera-b72251ba87414f6090631a52fab22852
+* author:	Prince Obrymec (https://sketchfab.com/prince-obrymec)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

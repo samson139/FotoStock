@@ -1,12 +1,12 @@
 
 
-import { Signup } from "../components";
+import { Signin } from "../components";
 
 
 function App() {
   return (
     <>
-      <Signup />
+      <Signin />
     </>
   )
 }

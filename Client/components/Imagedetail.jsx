@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom"
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import customFetch from "../src/utils/utils";
 import { useQuery } from "react-query";
-import { Loading, Error } from "../components"
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import { Loading, Error } from "../components";
 
 const Imagedetail = () => {
   const { id } = useParams();
@@ -11,53 +9,148 @@ const Imagedetail = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    const from = location.state?.from || '/user';
+    const from = location.state?.from || "/user";
     navigate(from);
   };
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ['image'],
-    queryFn: () => customFetch.get(`/getimage/${id}`, {
-      withCredentials: true,
-    })
-  })
+    queryKey: ["image", id],
+    queryFn: () =>
+      customFetch.get(`/getimage/${id}`, {
+        withCredentials: true,
+      }),
+  });
 
-
-  if (isLoading) {
-    return <Loading />
-  }
-  if (error) {
-    return <Error />
-  }
+  if (isLoading) return <Loading />;
+  if (error) return <Error />;
 
   const img = data?.data;
-  const givenDateStr = data?.data.updatedAt
-  const givenDate = new Date(givenDateStr);
-  const currentDate = new Date();
 
-  // Calculate the difference in milliseconds
-  const diffInMs = currentDate - givenDate;
-  console.log("diff", diffInMs);
-  // Convert milliseconds to days
-  const msInDay = 1000 * 60 * 60 * 24;
-  const diffInDays = Math.floor(diffInMs / msInDay);
-  console.log("diffInDays", diffInDays);
+  const givenDate = new Date(img.updatedAt);
+  const currentDate = new Date();
+  const diffInDays = Math.floor((currentDate - givenDate) / (1000 * 60 * 60 * 24));
+
   return (
-    <>
-      <button className="fixed left-10 top-70 md:top-24 btn btn-info" onClick={handleBack}>Back</button>
-      <div className="mt-36 w-[67%] md:w-[70%] h-full max-w-[900px] mx-auto flex-col justify-between content-center items-center rounded-lg md:mt-10 md:flex md:flex-row">
-        <div className="w-full max-w-[500px] h-[300px] md:h-[500px] mr-6 mx-auto">
-          <img src={img.url} alt="its a cat" className="w-full h-full border border-gray-300 rounded-xl shadow-2xl shadow-gray-900" />
+    <div
+      className="
+        pt-28 pb-16 min-h-screen flex justify-center items-start
+        bg-gradient-to-b from-gray-100 to-gray-300
+        dark:from-gray-900 dark:to-black
+        transition-all duration-500
+      "
+    >
+
+      {/* Back Button */}
+      <button
+        onClick={handleBack}
+        className="
+          fixed left-6 top-28 z-50
+          bg-white dark:bg-gray-800 text-gray-800 dark:text-white
+          px-5 py-2 rounded-full font-medium shadow-xl
+          border border-gray-300 dark:border-gray-700
+          hover:shadow-2xl hover:scale-105 transition duration-300
+        "
+      >
+        ← Back
+      </button>
+
+      {/* Card Container */}
+      <div
+        className="
+          w-[90%] max-w-6xl rounded-3xl glass-card shadow-2xl
+          flex flex-col md:flex-row gap-10 animate-fadeInUp
+        "
+      >
+
+        {/* IMAGE */}
+        <div className="flex-1">
+          <img
+            src={img.url}
+            alt={img.imagename}
+            className="
+              w-full  h-[350px] md:h-[540px] object-cover rounded-2xl
+              shadow-2xl hover:shadow-3xl transition-all duration-500
+              hover:scale-[1.02]
+            "
+          />
         </div>
-        <div className="py-2 dark:text-amber-100 ">
-          <h1 className="border-b-2 border-gray-700"><span className="dark:text-orange-500 font-mono sm:text-sm font-semibold tracking-wider text-green-800 lg:text-xl">Image name:</span><span className="font-light dark:text-gray-200 text-black tracking-wider italic">{img.imagename}</span> </h1>
-          <h2 className="border-b-2 border-gray-700"><span className="dark:text-orange-500 font-mono sm:text-sm font-semibold tracking-wider text-green-800 lg:text-xl">Description: </span> <span className="font-light dark:text-gray-200 text-black tracking-wider italic">{img.description}</span></h2>
-          <h3 className="border-b-2 border-gray-700"><span className="dark:text-orange-500 font-mono sm:text-sm font-semibold tracking-wider text-green-800 lg:text-xl">Uploaded by:</span> <span className="font-light dark:text-gray-200 text-black tracking-widest italic">{img.firstname[0] + img.firstname.slice(1).toLowerCase()}</span></h3>
-          <h4 className="border-b-2 border-gray-700"><span className="dark:text-orange-500 font-mono sm:text-sm font-semibold tracking-wider text-green-800 lg:text-xl">Price:</span><span className="font-light dark:text-gray-200 text-black tracking-widest italic"> {img.price}$</span></h4>
-          <h5 className="dark:text-orange-500 font-serif text-sm text-center font-semibold tracking-widest text-green-900"><span className="font-mono tracking-widest italic font-bold">Image {diffInDays == 0 ? `is uploaded today` : diffInDays == 1 ? `was uploaded 1 day ago` : `was uploaded ${diffInDays} days ago`}</span> </h5>
+
+        {/* DETAILS */}
+        <div className="flex-1 flex flex-col justify-between space-y-2 dark:text-white">
+
+          {/* Title + Description */}
+          <div className="space-y-10 py-8">
+            <h1
+              className="
+                text-center text-4xl md:text-5xl font-extrabold tracking-wide
+                text-gray-900 dark:text-amber-200
+              "
+            >
+              {img.imagename}
+            </h1>
+
+            <p
+              className="
+                text-center text-gray-700 px-4 dark:text-gray-300
+                text-lg leading-relaxed italic
+              "
+            >
+              {img.description}
+            </p>
+          </div>
+
+          {/* Uploaded By + Price */}
+          <div
+            className="
+              flex justify-between items-center
+        
+              pt-6 px-4 rounded-xl
+            "
+          >
+            {/* LEFT → Uploaded By */}
+            <div className="text-md">
+              <span className="font-semibold text-gray-900 dark:text-amber-300">
+                Uploaded By:
+              </span>
+              <span className="ml-2 font-light italic text-gray-700 dark:text-gray-200">
+                {img.firstname[0].toUpperCase() + img.firstname.slice(1).toLowerCase()}
+              </span>
+            </div>
+
+            {/* RIGHT → Price */}
+            <div className="text-md">
+              <span className="font-bold text-green-700 dark:text-green-400 text-xl">
+                ${img.price}
+              </span>
+            </div>
+          </div>
+
+          {/* UPLOAD TIME */}
+          {/* UPLOAD TIME BADGE */}
+          <div
+            className="
+    absolute top-0 right-4
+    bg-gradient-to-r from-red-500 to-red-700
+    text-white text-xs md:text-sm font-semibold
+    px-4 py-2 rounded-full shadow-xl
+    tracking-wide animate-fadeInUp
+  "
+          >
+            {diffInDays === 0
+              ? "Today"
+              : diffInDays === 1
+                ? "1 Day Ago"
+                : `${diffInDays} Days Ago`}
+          </div>
+
+
         </div>
       </div>
-    </>
-  )
-}
+
+    </div>
+  );
+};
+
 export default Imagedetail;
+
+

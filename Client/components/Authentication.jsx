@@ -9,6 +9,7 @@ export const useAuthContext = () => useContext(AuthenticationContext);
 
 const Authentication = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const checkToken = () => {
     const token = Cookies.get("jwtToken");
@@ -25,9 +26,12 @@ const Authentication = ({ children }) => {
   };
 
   useEffect(() => {
-    // ✅ Check token on mount and update state
-    const isValid = checkToken();
-    setIsLoggedIn(isValid);
+    const validateToken = async () => {
+      const isValid = checkToken();
+      setIsLoggedIn(isValid);
+      setLoading(false); // only stop loading after check
+    };
+    validateToken();
   }, []);
 
   const handleLogout = async () => {
@@ -43,7 +47,7 @@ const Authentication = ({ children }) => {
   };
 
   return (
-    <AuthenticationContext.Provider value={{ isLoggedIn, setIsLoggedIn, handleLogout, checkToken }}>
+    <AuthenticationContext.Provider value={{ isLoggedIn, setIsLoggedIn, handleLogout, checkToken, loading, setLoading }}>
       {children}
     </AuthenticationContext.Provider>
   );

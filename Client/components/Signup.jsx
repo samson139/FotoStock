@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+/* eslint-disable react/no-unknown-property */
+import { Suspense, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../src/utils/utils";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import Camera from "../components/Camera";
+import RotatingCamera from "./RotatingCamera.jsx";
 import { useAuthContext } from "./Authentication";
-import ChatSupport from "./ChatSupport";
+import FormInput from "./FormInput";
 
 const Signup = () => {
-  const [formData, setformData] = useState({
+  const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
     email: "",
@@ -16,104 +21,150 @@ const Signup = () => {
 
   const { setIsLoggedIn, checkToken } = useAuthContext();
   const navigate = useNavigate();
-  useEffect(() => {
 
-    if (checkToken()) {
-      navigate("/user", { replace: true });
-    }
-
-  }, [navigate]);
   const inputHandler = (e) => {
     const { name, value } = e.target;
-    setformData({
-      ...formData,
-      [name]: value
-    });
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  useEffect(() => {
+    if (checkToken()) {
+      setIsLoggedIn(true);
+      navigate("/user", { replace: true });
+    }
+  }, [checkToken, navigate, setIsLoggedIn]);
+
+  // 👉 REGEX VALIDATION RULES
+  const nameRegex = /^[A-Za-z]{2,25}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+  // 👉 VALIDATION FUNCTION
+  const validateInputs = () => {
+    const { firstname, lastname, email, password, confirmedPassword } = formData;
+
+    if (!nameRegex.test(firstname)) {
+      toast.error("First name should contain only letters (2–25 chars).");
+      return false;
+    }
+
+    if (!nameRegex.test(lastname)) {
+      toast.error("Last name should contain only letters (2–25 chars).");
+      return false;
+    }
+
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return false;
+    }
+
+    if (!passwordRegex.test(password)) {
+      toast.error("Password must be 8+ chars, include uppercase, lowercase & a number.");
+      return false;
+    }
+
+    if (password !== confirmedPassword) {
+      toast.error("Passwords do not match.");
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateInputs()) return; // ⛔ stop if validation fails
+
     try {
       const response = await customFetch.post("/signup", formData, {
-        headers: {
-          'Content-type': 'application/json'
-        },
+        headers: { "Content-type": "application/json" },
       });
-      if (response.status == 200) {
+
+      if (response.status === 200) {
         toast.success(response.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'An unknown error occurred');
+      toast.error(error.response?.data?.message || "An unknown error occurred");
     }
-  }
-
+  };
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center bg-gray-100 dark:bg-slate-900 transition-all duration-300 ease-in-out">
-      <h1 className="dark:text-amber-100 text-4xl text-gray-900 font-mono tracking-wider w-[100%] text-center mt-8 mb-8 sm:text-5xl">Welcome to the Photopedia!</h1>
-      <div className="w-[80%] sm:w-[70%] md:w-[50%] lg:w-[40%] mx-auto">
-        <form className="dark:text-amber-50  text-black w-100 text-sm" onSubmit={handleSubmit}>
-          <label htmlFor="exampleInputFirstName" className="dark:text-white dark:bg-slate-700 font-light input bg-slate-100 border-slate-950 input-bordered flex items-center gap-2 mb-3">
-            First name
-            <input
-              type="text"
-              name="firstname"
-              onChange={inputHandler}
+    <div className="relative w-full h-screen bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 dark:from-gray-900 dark:via-gray-800 dark:to-black overflow-hidden">
 
-              id="exampleInputFirstName"
-              required />
-          </label>
+      {/* Canvas Background */}
+      <Canvas className="absolute w-full h-full z-0">
+        <Suspense fallback={null}>
+          <OrbitControls enableZoom={false} />
+          <ambientLight intensity={1} />
+          <directionalLight position={[100, 100, 45]} intensity={5} />
+          <Camera position={[5, -6, -15]} rotation={[-Math.PI / 20, -Math.PI / 20, -Math.PI / 20]} />
+          <RotatingCamera />
+        </Suspense>
+      </Canvas>
 
-          <label htmlFor="exampleInputLastName" className="dark:text-white dark:bg-slate-700 font-light input bg-slate-100 border-slate-950  input-bordered flex items-center gap-2 mb-3">Last name
-            <input
-              type="text"
-              name="lastname"
-              onChange={inputHandler}
+      {/* Signup Form */}
+      <div className="z-20 opacity-90 px-4 w-full mx-auto md:w-1/3 max-w-md p-6 rounded-2xl shadow-xl backdrop-blur-xl bg-white/80 border border-gray-300 dark:bg-white/10 dark:border-white/20 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 
-              id="exampleInputLastName"
-              required />
-          </label>
+        <h1 className="text-2xl text-center font-semibold text-gray-900 dark:text-white mb-5">
+          Create Your Account
+        </h1>
 
+        <form onSubmit={handleSubmit} className="space-y-3">
 
-          <label htmlFor="exampleInputEmail1" className="dark:text-white dark:bg-slate-700 font-light input bg-slate-100 border-slate-950  input-bordered flex items-center gap-2 mb-3">Email address
-            <input
-              type="email"
-              name="email"
-              onChange={inputHandler}
-              id="exampleInputEmail1"
-              required
-            />
-          </label>
+          <FormInput
+            label="First Name"
+            name="firstname"
+            type="text"
+            onChange={inputHandler}
+            placeholder="Firstname"
+          />
 
+          <FormInput
+            label="Last Name"
+            name="lastname"
+            type="text"
+            onChange={inputHandler}
+            placeholder="Lastname"
+          />
 
-          <label htmlFor="exampleInputPassword1" className="dark:text-white dark:bg-slate-700 font-light input bg-slate-100 border-slate-950  input-bordered flex items-center gap-2 mb-3">Password
-            <input
-              type="password"
-              name="password"
-              onChange={inputHandler}
+          <FormInput
+            label="Email Address"
+            name="email"
+            type="email"
+            onChange={inputHandler}
+            placeholder="Email"
+          />
 
-              id="exampleInputPassword1"
-              required
-            />
-          </label>
+          <FormInput
+            label="Password"
+            name="password"
+            type="password"
+            onChange={inputHandler}
+            placeholder="Password"
+          />
 
-          <label htmlFor="exampleInputPassword2" className="dark:text-white dark:bg-slate-700 font-light input bg-slate-100 border-slate-950  input-bordered flex items-center gap-2 mb-3" >
-            Confirmed Password
-            <input type="password"
-              name="confirmedPassword"
-              onChange={inputHandler}
-              id="exampleInputPassword2" />
-          </label>
+          <FormInput
+            label="Confirm Password"
+            name="confirmedPassword"
+            type="password"
+            onChange={inputHandler}
+            placeholder="Confirm Password"
+          />
 
-          <div className="w-[100%]">
-            <button type="submit" className="btn btn-primary mx-auto mt-4 mb-2 w-[30%] text-lg block">Sign Up</button>
-            <Link to="/signin">
-              <button className="btn btn-primary mx-auto mt-4 mb-2 w-[30%] text-lg block" type="button" >Sign In</button>
+          <div className="pt-4 space-y-4">
+            <button type="submit" className="w-full mb-3 py-2 rounded-xl text-md font-semibold shadow-lg bg-blue-600 text-white">
+              Sign Up
+            </button>
+
+            <Link to="/">
+              <button type="button" className="w-full py-2 rounded-xl font-sm transition-all border border-gray-700 text-gray-900 hover:bg-gray-200 dark:border-white/30 dark:text-white dark:hover:bg-white/10">
+                Sign In
+              </button>
             </Link>
           </div>
         </form>
       </div>
-      <ChatSupport />
     </div>
   );
 };

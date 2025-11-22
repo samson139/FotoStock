@@ -31,4 +31,33 @@ html, body {
   .dark .range::-moz-range-thumb {
     background-color: #ffffff; /* White thumb in dark mode */
   }
+  .glass-card {
+  backdrop-filter: blur(14px) saturate(150%);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.dark .glass-card {
+  background: rgba(30, 41, 59, 0.45);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+/* --- GLASS CARD STYLING --- */
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.dark .glass-card {
+  background: rgba(20, 20, 20, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 }

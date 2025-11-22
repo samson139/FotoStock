@@ -12,6 +12,7 @@ export default {
     extend: {
       fontFamily: {
         manrope: ["Manrope", "sans-serif"],
+        sans: ["Noto Sans", "sans-serif"],
       },
       backgroundImage: {
         'main': "url('/assets/splash.jpg')",

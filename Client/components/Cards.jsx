@@ -31,6 +31,16 @@ const Cards = () => {
 
   const currentPosts = allPosts.slice(firstPostIndex, lastPostIndex);
 
+  if (currentPosts.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-3xl text-gray-700 dark:text-gray-300 font-serif tracking-wide">
+          No posts yet. Please upload some images.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full min-h-screen px-4 py-8 flex flex-col items-center">
 

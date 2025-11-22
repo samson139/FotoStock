@@ -14,8 +14,6 @@ const Search = () => {
   const dispatch = useDispatch();
   const [form, setFormData] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-
-  // 📌 Pagination State
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
 
@@ -51,7 +49,7 @@ const Search = () => {
   return (
     <div className="relative w-full">
 
-      {/* ⭐ Mobile Filter Toggle Button (Top-Left) */}
+      {/* Mobile Filter Toggle Button */}
       <button
         className="
           md:hidden fixed top-24 left-4 z-[90] 
@@ -75,68 +73,81 @@ const Search = () => {
       {/* Layout Wrapper */}
       <div className="flex w-full min-h-screen">
 
-        {/* ⭐ Sidebar Filters (Fixed) */}
+        {/* Sidebar Filters */}
         <aside
           className={`
-    fixed top-10 left-0 z-30
-    w-[260px] h-screen
-    bg-white dark:bg-gray-900/60
-    shadow-xl border-r border-gray-900/30
-    backdrop-blur-lg
-    overflow-y-auto
-    flex justify-center         /* horizontal centering */
-    items-start md:items-start  /* align filters at top */
-    transition-transform duration-300
-    ${showFilters ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-  `}
+            fixed top-10 left-0 z-30
+            w-[260px] h-screen
+            bg-white dark:bg-gray-900/60
+            shadow-xl border-r border-gray-900/30
+            backdrop-blur-lg
+            overflow-y-auto
+            flex justify-center
+            items-start md:items-start
+            transition-transform duration-300
+            ${showFilters ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+          `}
         >
           <Filters sendFormData={handleFormFromFilter} setShowFilters={setShowFilters} />
         </aside>
 
-
-        {/* ⭐ Main Content */}
-        <main className="flex-1 p-6 ml-0 md:ml-[260px] pt-24 md:pt-20 bg-gray-100 dark:bg-slate-900 transition-all duration-300">
-
-          <div className="flex flex-wrap justify-center gap-6">
-            {currentProducts.map((img) => (
-              <div
-                key={img._id}
-                className="
-                  w-full sm:w-[48%] md:w-[45%] lg:w-[30%] xl:w-[28%]
-                  hover:scale-[1.04] transition-transform duration-300
-                "
-              >
-                <Card {...img}>
-                  <button
-                    className="
-                      w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold
-                      px-3 py-2 rounded-lg shadow-md transition
-                    "
-                    onClick={() => handleAddToCart(img)}
-                  >
-                    Add to Cart
-                  </button>
-                </Card>
-              </div>
-            ))}
+        {/* Main Content */}
+        {currentProducts.length === 0 ? (
+          <div className="flex justify-center items-center min-h-screen w-full md:ml-[260px]">
+            <p className="text-3xl font-sans text-gray-700 dark:text-gray-300 tracking-wide">
+              No products found matching your criteria.
+            </p>
           </div>
+        ) : (
+          <main className="flex-1 p-6 ml-0 md:ml-[260px] pt-24 md:pt-20 bg-gray-100 dark:bg-slate-900 transition-all duration-300">
 
-          {/* Pagination */}
-          {totalPosts > postsPerPage && (
-            <Pagination
-              totalPosts={totalPosts}
-              postsPerPage={postsPerPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
-        </main>
+            <div className="flex flex-wrap justify-center gap-6">
+              {currentProducts.map((img) => {
+                const { _id, imagename, price, description, url, firstname, updatedAt } = img;
+                return (
+                  <div
+                    key={_id}
+                    className="w-full sm:w-[48%] md:w-[45%] lg:w-[30%] xl:w-[28%] flex flex-col gap-4"
+                  >
+                    <Card
+                      id={_id}
+                      imagename={imagename}
+                      price={price}
+                      description={description}
+                      url={url}
+                      firstname={firstname}
+                      uploadedAt={updatedAt}
+                    />
+
+                    <button
+                      className="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-600 dark:to-blue-800 text-white font-mono py-1 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                      onClick={() => handleAddToCart(img)}
+                    >
+                      Add to Cart
+                    </button>
+
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Pagination */}
+            {totalPosts > postsPerPage && (
+              <Pagination
+                totalPosts={totalPosts}
+                postsPerPage={postsPerPage}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            )}
+          </main>
+        )}
+
       </div>
     </div>
   );
 };
 
 export default Search;
-
 
 

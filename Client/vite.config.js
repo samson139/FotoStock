@@ -16,6 +16,7 @@ export default defineConfig({
       ]
     })
   ],
+  base: process.env.VIT_BASE_PATH || '/',
   build: {
     outDir: 'dist',
   }

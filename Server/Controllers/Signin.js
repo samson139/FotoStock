@@ -19,8 +19,8 @@ const signin = async (req, res) => {
         firstname: user.firstname,
         lastname: user.lastname
       },
-        `${process.env.SECRETKEY}`,
-        { expiresIn: 1000 * 60 * 60 * 24 });
+        process.env.SECRETKEY,
+        { expiresIn: "1d"});
 
       res.cookie("jwtToken", signinToken, {
         httpOnly: true,

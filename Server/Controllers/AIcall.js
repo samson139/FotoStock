@@ -16,7 +16,18 @@ const AIcall = async (req, res) => {
     const response = await client.chat.completions.create({
       model: "gpt-4",
       messages: [
-        { role: "user", content: message }
+        {
+          role: "system",
+          content: `You are Alice, a virtual assistant for the Photopedia application. 
+      You always answer customer questions about Photopedia politely and informatively. Photopedia is a platform where users can buy and sell high-quality photographs. 
+      Provide clear and concise information about the platform's features, pricing, and policies. 
+      If a user has a technical issue or needs further assistance, guide them to contact Photopedia support at +1-925-272-5671 or email id Samsonm08@gmail.com
+     `
+        },
+        {
+          role: "user",
+          content: message
+        }
       ],
     });
     res.json({ data: response.choices[0].message.content });

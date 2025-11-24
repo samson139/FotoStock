@@ -7,8 +7,6 @@ require('dotenv').config();
 const signin = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(req.body);
-  console.log("signin hit");
 
   if (!await checkPreviousUser(email)) return res.status(400).json({ message: 'User Doesnt exist' })
   try {
@@ -23,7 +21,6 @@ const signin = async (req, res) => {
       },
         `${process.env.SECRETKEY}`,
         { expiresIn: 1000 * 60 * 60 * 24 });
-      console.log("token", signinToken);
       res.cookie("jwtToken", signinToken, {
         maxAge: 1000 * 60 * 60 * 24,
       });

@@ -17,7 +17,7 @@ server.use(express.json());
 
 server.use(
   cors({
-    origin: "https://fhotoshtock.netlify.app",
+    origin: "https://foto-stock-3t75.vercel.app/",
     credentials: true,
   })
 

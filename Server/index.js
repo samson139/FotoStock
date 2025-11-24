@@ -17,7 +17,7 @@ server.use(express.json());
 
 server.use(
   cors({
-    origin: "https://foto-stock-3t75.vercel.app",
+    origin: "https://foto-stock-doo7.vercel.app",
     credentials: true,
   })
 

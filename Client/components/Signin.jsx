@@ -44,14 +44,7 @@ const Signin = () => {
         headers: { "Content-type": "application/json" },
         withCredentials: true,
       });
-
       if (response.status === 200) {
-        Cookies.set("jwtToken", response.data.signinToken, {
-          expires: 7,
-          path: "/",
-          secure: true,
-          sameSite: "Strict",
-        });
         setIsLoggedIn(true);
         toast.success("Sign-in successful");
         navigate("/user", { replace: true });

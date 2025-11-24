@@ -24,12 +24,13 @@ const signin = async (req, res) => {
 
       res.cookie("jwtToken", signinToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // required for HTTPS
-        sameSite: "None", // for cross-site cookies
+        secure: true, // required for HTTPS
+        sameSite: "None",// for cross-site cookies
+        maxAge: 1000 * 60 * 30 // half an hour
       });
 
       return res.status(200).json({
-        signinToken, message: "Logged in successfully"
+        message: "Logged in successfully"
       });
     }
     else {

@@ -14,13 +14,13 @@ const signin = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
     console.log("jwt secret", process.env.SECRETKEY);
     if (passwordMatch) {
-      let signinToken = jwt.sign({
+      const signinToken = jwt.sign({
         id: user._id,
         firstname: user.firstname,
         lastname: user.lastname
       },
-        `${process.env.SECRETKEY}`,
-        { expiresIn: 1000 * 60 * 60 * 24 });
+        process.env.SECRETKEY,
+        { expiresIn: "1d" });
 
       res.cookie("jwtToken", signinToken, {
         httpOnly: true,

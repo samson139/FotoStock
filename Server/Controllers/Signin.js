@@ -11,8 +11,8 @@ const signin = async (req, res) => {
   if (!await checkPreviousUser(email)) return res.status(400).json({ message: 'User Doesnt exist' })
   try {
     const user = await UserModel.findOne({ email: email })
-    console.log(user);
     const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log("jwt secret", process.env.SECRETKEY);
     if (passwordMatch) {
       let signinToken = jwt.sign({
         id: user._id,
@@ -21,11 +21,16 @@ const signin = async (req, res) => {
       },
         `${process.env.SECRETKEY}`,
         { expiresIn: 1000 * 60 * 60 * 24 });
+
       res.cookie("jwtToken", signinToken, {
-        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+        secure: true, // required for HTTPS
+        sameSite: "None",// for cross-site cookies
+        maxAge: 1000 * 60 * 30 // half an hour
       });
+
       return res.status(200).json({
-        signinToken, message: "Logged in successfully"
+        message: "Logged in successfully"
       });
     }
     else {

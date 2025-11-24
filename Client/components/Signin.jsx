@@ -78,7 +78,7 @@ const Signin = () => {
 
       {/* Lottie Animation */}
       <div className="hidden md:block md:w-1/2 lg:w-1/2 mr-2">
-        <DotLottieReact src="../assets/photoAnime.lottie" loop autoplay />
+        <DotLottieReact src="/photoAnime.lottie" loop autoplay />
       </div>
 
       {/* Signin Form */}

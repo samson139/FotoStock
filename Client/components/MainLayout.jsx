@@ -18,7 +18,7 @@ const MainLayout = () => {
         </h1>
 
         <div className="w-12 h-14">
-          <DotLottieReact src="/photographer.lottie" loop autoplay />
+          <DotLottieReact src="/Photographer.lottie" loop autoplay />
         </div>
 
       </div>

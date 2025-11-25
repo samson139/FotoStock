@@ -19,8 +19,10 @@ const signin = async (req, res) => {
         lastname: user.lastname
       },
         process.env.SECRETKEY,
+
         { expiresIn: "1d" });
       const isProduction = process.env.NODE_ENV === "production";
+
       res.cookie("jwtToken", signinToken, {
         httpOnly: true,
         secure: isProduction,                // true for HTTPS (prod), false for localhost

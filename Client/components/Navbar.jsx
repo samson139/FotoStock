@@ -18,7 +18,6 @@ function Navbar() {
           <h1 className="text-3xl font-semibold px-4 drop-shadow-lg text-white">
             ρнσтσρє∂ια
           </h1>
-
         </div>
 
         {/* Hamburger Icon */}
@@ -59,34 +58,24 @@ function Navbar() {
       {
         menuOpen && (
           <>
-
-
             <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
-
               <div className="fixed top-0 right-0 h-full w-64 bg-gray-900 text-white shadow-lg p-4 flex flex-col">
-
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-2xl font-bold">Menu</span>
-
                   <button onClick={() => setMenuOpen(false)} className="text-white">
                     <FaTimes size={24} />
                   </button>
                 </div>
-
-
                 {/* Links */}
                 <div className="flex flex-col justify-center items-center">
                   <NavLink to="/" className="py-2 text-xl hover:text-yellow-200" onClick={() => setMenuOpen(false)}>Home</NavLink>
                   <NavLink to="upload" className="py-2 text-xl hover:text-yellow-200" onClick={() => setMenuOpen(false)}>Upload</NavLink>
                   <NavLink to="search" className="py-2 text-xl hover:text-yellow-200" onClick={() => setMenuOpen(false)}>Search</NavLink>
                   <NavLink to="contact" className="py-2 text-xl hover:text-yellow-200" onClick={() => setMenuOpen(false)}>Contact me</NavLink>
-
-
                   <div className="py-2 text-teal-200 hover:text-white text-xl">
                     <Logout />
                   </div>
                 </div>
-
               </div>
             </div>
           </>

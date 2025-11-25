@@ -14,10 +14,7 @@ const User = () => {
       navigate("/signin", { replace: true });
     }
   }, [isLoggedIn]);
-
-  console.log("User Data in User Component:", user);
   const { firstname, lastname } = user;
-
   return (
     <div className="w-full h-full pt-2">
       <div className="w-full flex justify-between items-center mb-4">

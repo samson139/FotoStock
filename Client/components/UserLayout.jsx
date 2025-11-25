@@ -26,7 +26,7 @@ const UserLayout = () => {
 
   return (
     <div className={isDarkMode ? "dark" : ""}>
-      {/* 🌙 DARK MODE TOGGLE — always visible */}
+      {/* DARK MODE TOGGLE — always visible */}
       <label className="fixed top-24 right-10 z-50 inline-flex items-center cursor-pointer dark:text-amber-100">
         <input
           type="checkbox"

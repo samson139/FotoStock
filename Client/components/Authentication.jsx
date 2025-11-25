@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-unused-vars */
 import { useEffect, useContext, createContext, useState } from "react";
 import PropTypes from "prop-types";
@@ -10,7 +11,7 @@ const Authentication = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // page-level loading
 
-  // --- Call /verify to check cookie ---
+
   const checkAuth = async () => {
     try {
       const res = await customFetch.get("/verify", { withCredentials: true });
@@ -28,7 +29,6 @@ const Authentication = ({ children }) => {
     }
   };
 
-  // --- Run once on initial load ---
   useEffect(() => {
     const init = async () => {
       await checkAuth();

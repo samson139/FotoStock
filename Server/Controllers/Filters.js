@@ -8,7 +8,7 @@ const filters = async (req, res) => {
 
   let range = Number(pricerange);
 
-  const excludedUserId = req.user.id // or any user id you want to exclude
+  const excludedUserId = req.user.id;
 
   let productsQuery = PhotoModel.find({ user: { $ne: excludedUserId } });
 

@@ -12,7 +12,6 @@ const signin = async (req, res) => {
   try {
     const user = await UserModel.findOne({ email: email })
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log("jwt secret", process.env.SECRETKEY);
     if (passwordMatch) {
       const signinToken = jwt.sign({
         id: user._id,
@@ -21,7 +20,7 @@ const signin = async (req, res) => {
       },
         process.env.SECRETKEY,
         { expiresIn: "1d" });
-      const isProduction = process.env.NODE_ENV === "development";
+      const isProduction = process.env.NODE_ENV === "production";
       res.cookie("jwtToken", signinToken, {
         httpOnly: true,
         secure: isProduction,                // true for HTTPS (prod), false for localhost

@@ -1,7 +1,7 @@
 
 
 const logout = (req, res) => {
-  const isProduction = process.env.NODE_ENV === "development";
+  const isProduction = process.env.NODE_ENV === "production";
   const token = req.cookies.jwtToken;
   console.log(token);
   res.clearCookie("jwtToken", {

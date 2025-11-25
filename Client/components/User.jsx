@@ -1,43 +1,33 @@
-import { useEffect } from "react";
-import Cookies from "js-cookie";
-import { Link, useOutletContext } from "react-router-dom";
-import Cards from "./Cards";
-import { useAuthContext } from "./Authentication";
 
+import { useAuthContext } from "./Authentication";
+import Cards from "./Cards";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const User = () => {
-  const { firstname, lastname } = useOutletContext();
-  const { isLoggedIn, setIsLoggedIn } = useAuthContext();
-
+  const { isLoggedIn, user } = useAuthContext();
+  const navigate = useNavigate();
+  // Optional: redirect or effect logic can go here if needed
   useEffect(() => {
-    const checkJWTToken = async () => {
-      const token = Cookies.get("jwtToken");
-      if (token) {
-        setIsLoggedIn(true);
-      }
-      else {
-        setIsLoggedIn(false);
-      }
+    if (!isLoggedIn) {
+      // Redirect logic can be added here if necessary
+      navigate("/signin", { replace: true });
     }
-    checkJWTToken();
+  }, [isLoggedIn]);
 
-  }, [setIsLoggedIn]);
+  console.log("User Data in User Component:", user);
+  const { firstname, lastname } = user;
 
   return (
-    <>
-      {isLoggedIn ? (
-        <div className="w-full h-full pt-2">
-          <div className="w-full flex justify-between items-center">
-            <p className="dark:text-amber-100 inline text-2xl font-mono ml-6 text-lime-950"> Welcome! {firstname} {lastname}</p>
-          </div>
-          <Cards />
-        </div>
-      ) : (
-        <p>Please Login, <Link to="/signin">Signin</Link></p>
-      )
-      }
-    </>
+    <div className="w-full h-full pt-2">
+      <div className="w-full flex justify-between items-center mb-4">
+        <p className="dark:text-amber-100 inline text-2xl font-mono ml-6 text-lime-950">
+          Welcome! {firstname} {lastname}
+        </p>
+      </div>
+      <Cards />
+    </div>
   );
-}
+};
 
-export default User; 
+export default User;

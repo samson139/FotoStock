@@ -5,10 +5,13 @@ const filters = async (req, res) => {
 
   const { name, imagename, pricerange, sortbyname, sortbyprice, sortbydateuploaded } = req.query;
   const priceSort = sortbyprice?.split(" ").join("");
-  const userId = req.userId;
+
   let range = Number(pricerange);
 
-  let productsQuery = PhotoModel.find({ user: { $ne: userId } });
+  const excludedUserId = req.user.id // or any user id you want to exclude
+
+  let productsQuery = PhotoModel.find({ user: { $ne: excludedUserId } });
+
 
 
   if (name) {

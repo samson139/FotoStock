@@ -1,82 +1,77 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require('dotenv').config();
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const jwt = require("jsonwebtoken");
-//models import
-const fs = require("fs");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const path = require("path");
-const isAuthenticated = require("./Authentication/Authentication")
+require("dotenv").config();
 
+const { requireAuth, verifyAuth } = require("./Authentication/Authentication");
+
+// controllers
+const { signup } = require("./Controllers/Signup");
+const { signin } = require("./Controllers/Signin");
+const { filters } = require("./Controllers/Filters");
+const getImage = require("./Controllers/GetImage");
+const uploadImage = require("./Controllers/UploadImage");
+const allImages = require("./Controllers/Allimages");
+const logout = require("./Controllers/Logout");
+const AIcall = require("./Controllers/AIcall");
+
+// Express setup
 const server = express();
 server.use(cookieParser());
 server.use(express.json());
-//definig cors problem
 
+// CORS setup
+const isProduction = process.env.NODE_ENV === "production";
 server.use(
   cors({
-    origin: "https://foto-stock-3t75.vercel.app/",
+    origin: isProduction
+      ? "https://myapp.vercel.app"
+      : "http://localhost:5173",
     credentials: true,
   })
+);
 
-)
+// Multer setup
+const uploadDir = path.join(__dirname, "public", "data", "uploads");
 
-//importing controllers
-const { signup } = require("./Controllers/Signup");
-const { signin } = require("./Controllers/Signin");
-const { filters } = require("./Controllers/Filters")
-const getImage = require("./Controllers/GetImage")
-const uploadImage = require("./Controllers/UploadImage")
-const allImages = require("./Controllers/Allimages")
-const logout = require("./Controllers/Logout")
-const AIcall = require("./Controllers/AIcall");
-
-
-
-//multer
-const place = path.join(__dirname, 'public', 'data', 'uploads');
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, place);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
-  }
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) =>
+    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`),
 });
 
-const upload = multer(
-  {
-    storage: storage,
-  });
+const upload = multer({ storage });
 
-//connecting to the mongodb using the mongoclient
-const url = `mongodb+srv://samsonm08:${process.env.DBPASS}@fotostock.jqtrv.mongodb.net/?retryWrites=true&w=majority&appName=fotostock`
-const connect = async (url) => {
+// Database connection
+(async () => {
   try {
-    await mongoose.connect(url);
-    console.log("connected to database");
+    await mongoose.connect(
+      `mongodb+srv://samsonm08:${process.env.DBPASS}@fotostock.jqtrv.mongodb.net/?retryWrites=true&w=majority`
+    );
+    console.log("MongoDB connected");
+  } catch (err) {
+    console.error("Database connection error:", err.message);
   }
-  catch (error) {
-    console.error(error.message, "error occured");
-  }
-}
-connect(url);
+})();
 
-server.post('/signup', signup);
+// public routes
+server.post("/signup", signup);
 server.post("/signin", signin);
-server.post("/uploadimage", upload.single("image_file"), isAuthenticated, uploadImage);
-server.get("/getimages", isAuthenticated, allImages);
-server.get("/getimage/:id", isAuthenticated, getImage);
-server.get("/getAll", isAuthenticated, filters)
-server.post('/logout', logout)
-server.post("/api/chat", AIcall);
+server.post("/logout", logout);
+server.get("/verify", verifyAuth);
 
-server.get("/test", (req, res) => {
-  res.send("Hello from the server");
-})
+// protected routes
+server.post("/uploadimage", requireAuth, upload.single("image_file"), uploadImage);
+server.get("/getimages", requireAuth, allImages);
+server.get("/getimage/:id", requireAuth, getImage);
+server.get("/getAll", requireAuth, filters);
+server.post("/api/chat", requireAuth, AIcall);
 
-server.listen(5025, () => {
-  console.log(`Server is running on port 5025`);
-});
+// test route
+server.get("/test", (req, res) => res.send("Hello from server"));
+
+// start server
+server.listen(5025, () => console.log("Server running on port 5025"));

@@ -1,10 +1,12 @@
+const { default: mongoose } = require("mongoose");
 const PhotoModel = require("../models/products")
 
 const allImages = async (req, res) => {
-  const token = req.cookies.jwtToken;
-  const userId = req.userId;
+
+
+
   try {
-    const images = await PhotoModel.find({ user: userId });
+    const images = await PhotoModel.find({ user: req.user.id });
     res.json(images);
 
   }

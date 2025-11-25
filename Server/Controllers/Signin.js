@@ -21,12 +21,12 @@ const signin = async (req, res) => {
       },
         process.env.SECRETKEY,
         { expiresIn: "1d" });
-
+      const isProduction = process.env.NODE_ENV === "development";
       res.cookie("jwtToken", signinToken, {
         httpOnly: true,
-        secure: true, // required for HTTPS
-        sameSite: "None",// for cross-site cookies
-        maxAge: 1000 * 60 * 30 // half an hour
+        secure: isProduction,                // true for HTTPS (prod), false for localhost
+        sameSite: isProduction ? "None" : "Lax", // None for cross-origin, Lax for localhost
+        maxAge: 1000 * 60 * 30
       });
 
       return res.status(200).json({

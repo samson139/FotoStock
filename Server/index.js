@@ -24,12 +24,9 @@ server.use(cookieParser());
 server.use(express.json());
 
 // CORS setup
-const isProduction = process.env.NODE_ENV === "production";
 server.use(
   cors({
-    origin: isProduction
-      ? "https://foto-stock-3t75.vercel.app"
-      : "http://localhost:5173",
+    origin: "https://foto-stock-3t75.vercel.app",
     credentials: true,
   })
 );

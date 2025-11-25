@@ -28,7 +28,7 @@ const isProduction = process.env.NODE_ENV === "production";
 server.use(
   cors({
     origin: isProduction
-      ? "https://myapp.vercel.app"
+      ? "https://foto-stock-3t75.vercel.app"
       : "http://localhost:5173",
     credentials: true,
   })

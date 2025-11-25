@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from "react-query";
 import customFetch from '../src/utils/utils';
+import { useAuthContext } from './Authentication';
 
 const Upload = () => {
   const queryClient = useQueryClient();
-  const { firstname } = useOutletContext();
   const [imagename, setImagename] = useState('');
+  const { user } = useAuthContext();
+  const { firstname } = user;
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState("");
   const [imageFile, setImage] = useState(null);

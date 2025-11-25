@@ -1,53 +1,63 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable no-unused-vars */
 import { useEffect, useContext, createContext, useState } from "react";
-import Cookies from "js-cookie";
-import { jwtDecode } from 'jwt-decode';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import customFetch from "../src/utils/utils";
 
 export const AuthenticationContext = createContext();
 export const useAuthContext = () => useContext(AuthenticationContext);
 
 const Authentication = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // page-level loading
 
-  const checkToken = () => {
-    const token = Cookies.get("jwtToken");
-    if (!token) return false;
 
+  const checkAuth = async () => {
     try {
-      const decoded = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
-      return decoded.exp > currentTime;
-    } catch (error) {
-      console.error("Token validation error", error);
+      const res = await customFetch.get("/verify", { withCredentials: true });
+
+      if (res.data.valid) {
+        setUser(res.data.user);
+        console.log("Authenticated user:", res.data.user);
+        return true;
+      }
+      setUser(null);
+      return false;
+    } catch (err) {
+      setUser(null);
       return false;
     }
   };
 
   useEffect(() => {
-    const validateToken = async () => {
-      const isValid = checkToken();
-      setIsLoggedIn(isValid);
-      setLoading(false); // only stop loading after check
+    const init = async () => {
+      await checkAuth();
+      setLoading(false);
     };
-    validateToken();
+    init();
   }, []);
 
   const handleLogout = async () => {
     try {
-      const response = await customFetch.post('/logout', { withCredentials: true });
-      if (response.status === 200) {
-        setIsLoggedIn(false);
-        Cookies.remove('jwtToken');
-      }
-    } catch (error) {
-      console.error('Logout error:', error.response || error.message || error);
+      await customFetch.post("/logout", {}, { withCredentials: true });
+      setUser(null);
+    } catch (err) {
+      console.error("Logout error:", err);
     }
   };
 
   return (
-    <AuthenticationContext.Provider value={{ isLoggedIn, setIsLoggedIn, handleLogout, checkToken, loading, setLoading }}>
+    <AuthenticationContext.Provider
+      value={{
+        user,
+        setUser,
+        loading,
+        checkAuth,
+        handleLogout,
+        isLoggedIn: user !== null,
+        setLoading,
+      }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );
@@ -58,4 +68,5 @@ Authentication.propTypes = {
 };
 
 export default Authentication;
+
 

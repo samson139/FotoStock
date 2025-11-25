@@ -41,7 +41,6 @@ const Payment = () => {
         <p className="text-center text-lg font-semibold text-gray-900 dark:text-amber-50">
           Enter your card details
         </p>
-
         <Form className="flex flex-col gap-4">
           <FormInput label="Card Number" type="text" id="cardnumber" name="cardnumber" placeholder="1234 5678 9012 3456" required />
           <FormInput label="Cardholder Name" type="text" id="cardOwner" name="cardOwner" placeholder="John Doe" required />
@@ -50,7 +49,6 @@ const Payment = () => {
             <FormInput label="CVV" type="password" id="cvv" name="cvv" placeholder="123" required />
           </div>
         </Form>
-
         {/* Order Summary */}
         <div className="bg-gray-100 dark:bg-gray-900 rounded-xl p-4 shadow-inner flex flex-col gap-2">
           <h3 className="text-center font-bold text-gray-900 dark:text-amber-50 border-b border-gray-300 dark:border-gray-600 pb-1">Order Summary</h3>

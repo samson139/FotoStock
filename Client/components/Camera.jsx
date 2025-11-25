@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 
 
 
@@ -5,7 +6,7 @@ import { useGLTF } from '@react-three/drei'
 
 export default function Model(props) {
   const { nodes, materials } = useGLTF('/camera.gltf', true);
-  console.log(nodes, materials);
+
   return (
     <group {...props} dispose={null}>
       <group scale={0.80}>

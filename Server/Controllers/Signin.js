@@ -12,21 +12,22 @@ const signin = async (req, res) => {
   try {
     const user = await UserModel.findOne({ email: email })
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log("jwt secret", process.env.SECRETKEY);
     if (passwordMatch) {
-      let signinToken = jwt.sign({
+      const signinToken = jwt.sign({
         id: user._id,
         firstname: user.firstname,
         lastname: user.lastname
       },
         process.env.SECRETKEY,
-        { expiresIn: "1d"});
+
+        { expiresIn: "1d" });
+      const isProduction = process.env.NODE_ENV === "production";
 
       res.cookie("jwtToken", signinToken, {
         httpOnly: true,
-        secure: true, // required for HTTPS
-        sameSite: "None",// for cross-site cookies
-        maxAge: 1000 * 60 * 30 // half an hour
+        secure: isProduction,                // true for HTTPS (prod), false for localhost
+        sameSite: isProduction ? "None" : "Lax", // None for cross-origin, Lax for localhost
+        maxAge: 1000 * 60 * 30
       });
 
       return res.status(200).json({

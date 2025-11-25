@@ -1,39 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useAuthContext } from "./Authentication";
 import Navbar from './Navbar';
 import { useThemeContext } from "./ThemeContext";
 import ChatSupport from './ChatSupport';
+import Loading from './Loading';
 
 const UserLayout = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const { isLoggedIn, loading } = useAuthContext();
+
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useThemeContext();
 
   useEffect(() => {
-    const checkAuth = () => {
-      const token = Cookies.get("jwtToken");
-      if (token) {
-        const decoded = jwtDecode(token);
-        setUserData(decoded);
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-        navigate('/signin');
-      }
-    };
-    checkAuth();
-  }, [navigate]);
+    if (!loading && !isLoggedIn) {
+      navigate("/signin", { replace: true });
+    }
+  }, [loading, isLoggedIn, navigate]);
 
+  if (loading) return <Loading />;
   if (!isLoggedIn) {
-    return <div>Loading...</div>;
-  }
+    navigate("/signin", { replace: true });
+  };
+
 
   return (
     <div className={isDarkMode ? "dark" : ""}>
-      {/* 🌙 DARK MODE TOGGLE — always visible */}
+      {/* DARK MODE TOGGLE — always visible */}
       <label className="fixed top-24 right-10 z-50 inline-flex items-center cursor-pointer dark:text-amber-100">
         <input
           type="checkbox"
@@ -60,7 +53,7 @@ const UserLayout = () => {
 
         {/* Page Content */}
         <div className="z-20 min-h-screen pt-20 md:pt-24 bg-gray-100 dark:bg-slate-900 transition-all duration-300">
-          <Outlet context={userData} />
+          <Outlet />
         </div>
 
         {/* Chat Support */}

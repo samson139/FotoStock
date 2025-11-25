@@ -18,7 +18,6 @@ export default function RotatingCamera() {
   useFrame(() => {
     const angle = (t.get() * Math.PI) / 180;
     const radius = 6;
-
     camera.position.x = Math.cos(angle) * radius;
     camera.position.z = Math.sin(angle) * radius;
     camera.lookAt(0, 0, 0);

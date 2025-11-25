@@ -19,7 +19,8 @@ const Signup = () => {
     confirmedPassword: "",
   });
 
-  const { setIsLoggedIn, checkToken } = useAuthContext();
+
+  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const inputHandler = (e) => {
@@ -28,11 +29,10 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    if (checkToken()) {
-      setIsLoggedIn(true);
+    if (user) {
       navigate("/user", { replace: true });
     }
-  }, [checkToken, navigate, setIsLoggedIn]);
+  }, [user, navigate]);
 
   // 👉 REGEX VALIDATION RULES
   const nameRegex = /^[A-Za-z]{2,25}$/;

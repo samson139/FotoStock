@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const customFetch = axios.create({
-  baseURL: 'https://fotostock.onrender.com',
+
+  baseURL: import.meta.env.VITE_API_URL,
+
   withCredentials: true,
 })
 

@@ -15,7 +15,8 @@ const uploadImage = async (req, res) => {
 
   const { imagename, username, price, description } = req.body;
 
-  const userId = req.userId;
+
+  const userId = req.user.id;
   const user = await UserModel.findById(userId);
 
   const place = path.join(__dirname, '..', 'public', 'data', 'uploads');
@@ -44,7 +45,6 @@ const uploadImage = async (req, res) => {
     });
 
     const s3UploadResult = await s3UploadPromise;
-    console.log("Image uploaded successfully:", s3UploadResult);
     const location = s3UploadResult.Location;
 
 

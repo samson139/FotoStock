@@ -4,12 +4,10 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import ChatSupport from '../components/ChatSupport';
 const MainLayout = () => {
   const { isDarkMode, toggleTheme } = useThemeContext();
-  // Just for debugging, you can remove this
 
   return (
 
     <>
-
       <div className="fixed top-4 left-4 z-50 flex items-center">
         <h1
           className={`text-3xl font-semibold drop-shadow-lg ${isDarkMode ? "text-white" : "text-black"}`}
@@ -48,13 +46,8 @@ const MainLayout = () => {
     peer-checked:bg-gray-600 dark:peer-checked:bg-blue-600
   `}
           ></div>
-
-
           <span className={`ml-3 font-serif text-sm ${isDarkMode ? "text-white" : "text-black"}`}>{isDarkMode ? "Dark Mode" : "Light Mode"}</span>
         </label>
-
-
-
         {/* Main Content */}
         <div className="dark:bg-gray-800 dark:text-amber-50 w-full bg-gray-100 transition-colors duration-200">
           {/* Render the page content (outlet for routing) */}

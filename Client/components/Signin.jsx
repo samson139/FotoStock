@@ -8,7 +8,7 @@ import Loading from "./Loading";
 import FormInput from "./FormInput";
 
 const Signin = () => {
-  const { loading, user, checkAuth, } = useAuthContext();
+  const { loading, user, checkAuth } = useAuthContext();
   const navigate = useNavigate();
   const userRef = useRef();
 
@@ -17,12 +17,10 @@ const Signin = () => {
 
   // If already logged in → redirect
   useEffect(() => {
-    if (!loading && user) {
+    if (user) {
       navigate("/user", { replace: true });
     }
-  }, [loading, user, navigate]);
-
-  if (loading) return <Loading />;
+  }, [user, navigate]);
 
   const handleInput = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -42,7 +40,7 @@ const Signin = () => {
       });
 
       if (res.status === 200) {
-        await checkAuth();  // fetch user from cookie
+        localStorage.setItem("token", res.data.token);
         toast.success("Sign-in successful");
         navigate("/user", { replace: true });
       }

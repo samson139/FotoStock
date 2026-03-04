@@ -2,23 +2,27 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useContext, createContext, useState } from "react";
 import PropTypes from "prop-types";
-import customFetch from "../src/utils/utils";
-
 export const AuthenticationContext = createContext();
 export const useAuthContext = () => useContext(AuthenticationContext);
 
 const Authentication = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // page-level loading
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUser({ token });// You can replace with decoded info
+
+    }
+  }, []);
 
 
   const checkAuth = async () => {
     try {
-      const res = await customFetch.get("/verify", { withCredentials: true });
+      const token = localStorage.getItem("token")
 
-      if (res.data.valid) {
-        setUser(res.data.user);
-        console.log("Authenticated user:", res.data.user);
+      if (token) {
+        setUser({ token });
         return true;
       }
       setUser(null);
@@ -27,19 +31,12 @@ const Authentication = ({ children }) => {
       setUser(null);
       return false;
     }
-  };
 
-  useEffect(() => {
-    const init = async () => {
-      await checkAuth();
-      setLoading(false);
-    };
-    init();
-  }, []);
+  };
 
   const handleLogout = async () => {
     try {
-      await customFetch.post("/logout", {}, { withCredentials: true });
+      localStorage.removeItem("token");
       setUser(null);
     } catch (err) {
       console.error("Logout error:", err);
@@ -51,11 +48,9 @@ const Authentication = ({ children }) => {
       value={{
         user,
         setUser,
-        loading,
         checkAuth,
         handleLogout,
-        isLoggedIn: user !== null,
-        setLoading,
+        isLoggedIn: !!user,
       }}
     >
       {children}

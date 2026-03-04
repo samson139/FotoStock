@@ -35,16 +35,9 @@ const signin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    // Set secure cookie (mobile + Vercel compatible)
-    res.cookie("jwtToken", signinToken, {
-      httpOnly: true,
-      secure: true,          // MUST be true for mobile + HTTPS
-      sameSite: "None",      // MUST be None for cross-site cookies
-      path: "/",             // Important for cookie visibility everywhere
-      maxAge: 1000 * 60 * 30 // 30 minutes
-    });
 
-    return res.status(200).json({ message: "Logged in successfully" });
+
+    return res.status(200).json({ message: "Logged in successfully", token: signinToken });
 
   } catch (error) {
     console.error("Signin error:", error);

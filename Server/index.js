@@ -57,7 +57,6 @@ const upload = multer({ storage });
 // public routes
 server.post("/signup", signup);
 server.post("/signin", signin);
-server.post("/logout", logout);
 server.get("/verify", verifyAuth);
 
 // protected routes

@@ -23,7 +23,6 @@ const signin = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: "Wrong Password" });
     }
-
     // Create JWT token
     const signinToken = jwt.sign(
       {
@@ -34,11 +33,7 @@ const signin = async (req, res) => {
       process.env.SECRETKEY,
       { expiresIn: "1d" }
     );
-
-
-
     return res.status(200).json({ message: "Logged in successfully", token: signinToken });
-
   } catch (error) {
     console.error("Signin error:", error);
     return res.status(500).json({ message: "Internal Server Error" });

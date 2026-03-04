@@ -14,7 +14,7 @@ const User = () => {
       navigate("/signin", { replace: true });
     }
   }, [isLoggedIn]);
-  const { firstname, lastname } = user;
+  const { firstname, lastname } = user || {};
   return (
     <div className="w-full h-full pt-2">
       <div className="w-full flex justify-between items-center mb-4">

@@ -2,11 +2,16 @@ import axios from 'axios';
 
 const customFetch = axios.create({
 
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API_URL
 
-  withCredentials: true,
 })
-
+customFetch.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token"); // get JWT
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default customFetch;
 

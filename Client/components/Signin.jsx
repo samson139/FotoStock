@@ -8,7 +8,7 @@ import Loading from "./Loading";
 import FormInput from "./FormInput";
 
 const Signin = () => {
-  const { loading, user, checkAuth } = useAuthContext();
+  const { setUser, user } = useAuthContext();
   const navigate = useNavigate();
   const userRef = useRef();
 
@@ -41,6 +41,8 @@ const Signin = () => {
 
       if (res.status === 200) {
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        setUser(res.data.user);
         toast.success("Sign-in successful");
         navigate("/user", { replace: true });
       }

@@ -15,7 +15,6 @@ const { filters } = require("./Controllers/Filters");
 const getImage = require("./Controllers/GetImage");
 const uploadImage = require("./Controllers/UploadImage");
 const allImages = require("./Controllers/Allimages");
-const logout = require("./Controllers/Logout");
 const AIcall = require("./Controllers/AIcall");
 
 // Express setup

@@ -66,7 +66,7 @@ server.post("/uploadimage", requireAuth, upload.single("image_file"), uploadImag
 server.get("/getimages", requireAuth, allImages);
 server.get("/getimage/:id", requireAuth, getImage);
 server.get("/getAll", requireAuth, filters);
-server.post("/api/chat", requireAuth, AIcall);
+server.post("/api/chat", AIcall);
 
 // test route
 server.get("/test", (req, res) => res.send("Hello from server"));

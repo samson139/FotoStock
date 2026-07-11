@@ -95,7 +95,7 @@ const Signin = () => {
           <div className="pt-2 space-y-2">
             <button
               type="submit"
-              className="w-full py-2 text-lg rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+              className="w-full py-2 my-1 text-lg rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
             >
               Sign In
             </button>

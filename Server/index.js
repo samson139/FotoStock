@@ -39,20 +39,21 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) =>
     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`),
 });
-
 const upload = multer({ storage });
 
-// Database connection
+const password = encodeURIComponent(process.env.DBPASS);
+console.log(password);
+const uri = `mongodb+srv://samsonm08:${process.env.DBPASS}@fotostock.jqtrv.mongodb.net/?appName=fotostock`;
+
 (async () => {
   try {
-    await mongoose.connect(
-      `mongodb+srv://samsonm08:${process.env.DBPASS}@fotostock.jqtrv.mongodb.net/?retryWrites=true&w=majority`
-    );
+    await mongoose.connect(uri);
     console.log("MongoDB connected");
   } catch (err) {
-    console.error("Database connection error:", err.message);
+    console.error("MongoDB connection error:", err);
   }
 })();
+
 
 // public routes
 server.post("/signup", signup);

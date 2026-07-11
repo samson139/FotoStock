@@ -18,7 +18,6 @@ const Authentication = ({ children }) => {
 
       if (res.data.valid) {
         setUser(res.data.user);
-        console.log("Authenticated user:", res.data.user);
         return true;
       }
       setUser(null);
@@ -26,6 +25,9 @@ const Authentication = ({ children }) => {
     } catch (err) {
       setUser(null);
       return false;
+    }
+    finally{
+      setLoading(false);
     }
   };
 

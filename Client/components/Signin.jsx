@@ -92,18 +92,17 @@ const Signin = () => {
             placeholder="Password"
           />
 
-          <div className="pt-2 space-y-4">
+          <div className="pt-2 space-y-2">
             <button
               type="submit"
               className="w-full py-2 text-lg rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
             >
               Sign In
             </button>
-
             <Link to="/signup">
               <button
                 type="button"
-                className="w-full py-2 rounded-xl border border-gray-700 text-gray-900 hover:bg-gray-200 dark:border-white/30 dark:text-white dark:hover:bg-white/10"
+                className="w-full my-2 py-2 rounded-xl border border-gray-700 text-gray-900 hover:bg-gray-200 dark:border-white/30 dark:text-white dark:hover:bg-white/10"
               >
                 Create an Account
               </button>

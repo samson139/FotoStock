@@ -9,7 +9,9 @@ export const useAuthContext = () => useContext(AuthenticationContext);
 
 const Authentication = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // page-level loading
+  const cachedUser = localStorage.getItem("user");
+    return cachedUser ? JSON.parse(cachedUser) : null;
+  const [loading, setLoading] = useState(false); // page-level loading
 
 
   const checkAuth = async () => {
@@ -18,31 +20,32 @@ const Authentication = ({ children }) => {
 
       if (res.data.valid) {
         setUser(res.data.user);
+        localStorage.setItem(
+          "user",
+          JSON.stringify(res.data.user)
+        );
+
         return true;
       }
       setUser(null);
+      localStorage.removeItem("user");
       return false;
     } catch (err) {
       setUser(null);
+      localStorage.removeItem("user");
       return false;
-    }
-    finally{
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const init = async () => {
-      await checkAuth();
-      setLoading(false);
-    };
-    init();
+   checkAuth();
   }, []);
 
   const handleLogout = async () => {
     try {
       await customFetch.post("/logout", {}, { withCredentials: true });
       setUser(null);
+      localStorage.removeItem("user");
     } catch (err) {
       console.error("Logout error:", err);
     }

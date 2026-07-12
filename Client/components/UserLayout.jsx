@@ -20,7 +20,7 @@ const UserLayout = () => {
 
   if (loading) return <Loading />;
   if (!isLoggedIn) {
-    navigate("/signin", { replace: true });
+    return null;
   };
 
 

@@ -42,8 +42,12 @@ const Signin = () => {
       });
 
       if (res.status === 200) {
-        await checkAuth();  // fetch user from cookie
-        toast.success("Sign-in successful");
+        setUser(res.data.user);
+         localStorage.setItem(
+    "user",
+    JSON.stringify(res.data.user)
+  );
+        toast.success("res.data.message");
         navigate("/user", { replace: true });
       }
     } catch (error) {

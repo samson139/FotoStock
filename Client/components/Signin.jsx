@@ -8,7 +8,7 @@ import Loading from "./Loading";
 import FormInput from "./FormInput";
 
 const Signin = () => {
-  const { loading, user, checkAuth, } = useAuthContext();
+  const { loading, user, setUser } = useAuthContext();
   const navigate = useNavigate();
   const userRef = useRef();
 

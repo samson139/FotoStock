@@ -19,10 +19,6 @@ const UserLayout = () => {
   }, [loading, isLoggedIn, navigate]);
 
   if (loading) return <Loading />;
-  if (!isLoggedIn) {
-    return null;
-  };
-
 
   return (
     <div className={isDarkMode ? "dark" : ""}>

@@ -8,9 +8,10 @@ export const AuthenticationContext = createContext();
 export const useAuthContext = () => useContext(AuthenticationContext);
 
 const Authentication = ({ children }) => {
-  const [user, setUser] = useState(null);
+ const [user, setUser] = useState(() => {
   const cachedUser = localStorage.getItem("user");
-    return cachedUser ? JSON.parse(cachedUser) : null;
+  return cachedUser ? JSON.parse(cachedUser) : null;
+});
   const [loading, setLoading] = useState(false); // page-level loading
 
 
